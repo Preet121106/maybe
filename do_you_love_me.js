@@ -4,25 +4,35 @@ const gifResult = document.querySelector(".gif-result");
 const heartLoader = document.querySelector(".cssload-main");
 const yesBtn = document.querySelector(".js-yes-btn");
 const noBtn = document.querySelector(".js-no-btn");
+const bgMusic = document.getElementById("bg-music");
 
-// /change the postion of no button
+// Change the position of the "No" button on hover
 noBtn.addEventListener("mouseover", () => {
-  const newX = Math.floor(Math.random() * questionContainer.offsetWidth);
-  const newY = Math.floor(Math.random() * questionContainer.offsetWidth);
+  const newX = Math.floor(Math.random() * (window.innerWidth - noBtn.offsetWidth));
+  const newY = Math.floor(Math.random() * (window.innerHeight - noBtn.offsetHeight));
 
+  noBtn.style.position = "absolute";
   noBtn.style.left = `${newX}px`;
   noBtn.style.top = `${newY}px`;
 });
 
-// yes button functionality
-
+// Yes button functionality
 yesBtn.addEventListener("click", () => {
-  questionContainer.style.display = "none";
-  heartLoader.style.display = "inherit";
+  // Start background music on interaction
+  if (bgMusic) {
+    bgMusic.volume = 1.0;
+    bgMusic.play().catch((err) => {
+      console.warn("Autoplay blocked:", err);
+    });
+  }
 
-  const timeoutId = setTimeout(() => {
+  // Show heart loader
+  questionContainer.style.display = "none";
+  heartLoader.style.display = "flex"; // or "inherit" depending on your CSS
+
+  setTimeout(() => {
     heartLoader.style.display = "none";
-    resultContainer.style.display = "inherit";
+    resultContainer.style.display = "flex"; // or "block" depending on your CSS
     gifResult.play();
   }, 3000);
 });
